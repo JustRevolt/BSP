@@ -1,0 +1,79 @@
+#!/bin/bash
+
+log_file="./lab1_err"
+err_msg="Ошибка. Подробности смотрите в $log_file"
+
+while [ "$command" != 6 ]
+do
+echo "
+Введите номер команды из списка:
+	1) Напечатать имя текущего каталога
+	2) Сменить текущий каталог
+	3) Создать файл
+	4) Предоставить всем право на запись в файл
+	5) Удалить файл
+	6) Выйти из программы"
+read command || break
+case "$command" in 
+	1) echo "Текущий каталог:"
+		echo "	$( pwd )";;
+	2) echo "Введите путь к новому каталогу"
+		read arg || break
+		date>>$log_file
+		if 
+			cd "$arg" 2>>$log_file
+		then
+			echo "команда 2: текущий каталог сменен на \"$arg\"" >> $log_file
+		else
+			echo $err_msg
+		fi
+		;;
+	3) echo "Введите имя нового файла"
+		read arg || break
+		date>>$log_file                                                                   
+ 		if
+			touch "$arg" 2>>$log_file
+		then
+			echo "команда 3: файл \"$arg\" успешно создан">>$log_file
+		else
+         		echo "$err_msg"
+ 		fi
+		;;
+	4) echo "Введите имя файла"
+		read arg || break
+		date>>$log_file                                                                   
+		if
+		        сmod +w "$arg" 2>>$log_file
+		then
+		        echo "команда 4: текущий каталог сменен на \"$arg\"">>$log_file
+		else
+		        echo "$err_msg"
+		fi
+		;;
+	5) echo "Введите имя файла"
+		ans=""
+		read arg || break
+		while [[ "$ans" != "yes" && "$ans" != "no" ]]
+		do
+			echo "Вы точно желаете удалить файл \"$arg\"? (yes/no)"
+			read ans || break
+			if [ "$ans" == "yes" ]
+			then	
+				date>>$log_file 
+				if 
+					rm "$arg" 2>>$log_file
+				then
+					echo "команда 5: файл $arg успешно удален">>$log_file
+				else
+					echo "$err_msg"
+				fi 
+			fi
+		done
+		;;
+	6) continue
+		;;
+	*) echo "!!!Некорректно введен номер команды!!!
+!!!Попробуйте снова!!!"
+		;;
+esac
+done
