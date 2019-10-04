@@ -1,61 +1,80 @@
 #!/bin/bash
 
 log_file="./lab1_err"
-err_msg="Ошибка. Подробности смотрите в $log_file"
+
+source ./lab1_language.config
+
+
+echo "Language:
+	1)rus
+	2)eng"
+read arg_lng || break
+case "$arg_lng" in
+	1) lng="rus";;
+	2) lng="eng";;
+	*) exit 1;;
+esac
+
+err_msg="err_msg_${lng}"
 
 while [ "$command" != 6 ]
 do
-echo "
-Введите номер команды из списка:
-	1) Напечатать имя текущего каталога
-	2) Сменить текущий каталог
-	3) Создать файл
-	4) Предоставить всем право на запись в файл
-	5) Удалить файл
-	6) Выйти из программы"
+
+output="menu_${lng}"
+echo "${!output}"
+
 read command || break
 case "$command" in 
-	1) echo "Текущий каталог:"
+	1) output="command_1_${lng}"
+	echo "${!output}"
 		echo "	$( pwd )";;
-	2) echo "Введите путь к новому каталогу"
+	2) output="command_2_${lng}"
+	echo "${!output}"
 		read arg || break
 		date>>$log_file
 		if 
 			cd "$arg" 2>>$log_file
 		then
-			echo "команда 2: текущий каталог сменен на \"$arg\"" >> $log_file
+			output="command_2_log_${lng}"
+			echo "${!output}" >> $log_file
 		else
-			echo $err_msg
+			echo "${!err_msg}"
 		fi
 		;;
-	3) echo "Введите имя нового файла"
+	3) output="command_3_${lng}"
+	echo "${!output}"
 		read arg || break
 		date>>$log_file                                                                   
  		if
 			touch "$arg" 2>>$log_file
 		then
-			echo "команда 3: файл \"$arg\" успешно создан">>$log_file
+			output="command_3_log_${lng}"
+			echo "${!output}">>$log_file
 		else
-         		echo "$err_msg"
+         		echo "${!err_msg}"
  		fi
 		;;
-	4) echo "Введите имя файла"
+	4) output="command_4_${lng}"
+	echo "${!output}"
 		read arg || break
 		date>>$log_file                                                                   
 		if
-		        сmod +w "$arg" 2>>$log_file
+		        сhmod +w "$arg" 2>>$log_file
 		then
-		        echo "команда 4: текущий каталог сменен на \"$arg\"">>$log_file
+			output="command_4_log_${lng}"
+			echo "${!output}">>$log_file
 		else
-		        echo "$err_msg"
+		        echo "${!err_msg}"
 		fi
 		;;
-	5) echo "Введите имя файла"
+	5) output="command_5_${lng}"
+	echo "${!output}"
 		ans=""
 		read arg || break
 		while [[ "$ans" != "yes" && "$ans" != "no" ]]
 		do
-			echo "Вы точно желаете удалить файл \"$arg\"? (yes/no)"
+			output="command_5_conf_${lng}"
+			echo "${!output}"
 			read ans || break
 			if [ "$ans" == "yes" ]
 			then	
@@ -63,7 +82,8 @@ case "$command" in
 				if 
 					rm "$arg" 2>>$log_file
 				then
-					echo "команда 5: файл $arg успешно удален">>$log_file
+					output="command_5_log_${lng}"
+					echo "${!output}">>$log_file
 				else
 					echo "$err_msg"
 				fi 
@@ -72,8 +92,8 @@ case "$command" in
 		;;
 	6) continue
 		;;
-	*) echo "!!!Некорректно введен номер команды!!!
-!!!Попробуйте снова!!!"
+	*) output="command_err_${lng}"
+	echo "${!output}"
 		;;
 esac
 done
