@@ -1,0 +1,10 @@
+if ($args.length -gt 0) {
+	$acl= (Get-ACL args[0]).Access 
+	foreach ($var in $acl) {
+		$var | Select-Object -Property FileSystemRights
+	}
+}
+else {
+	write-host "No parametrs found."
+}
+
