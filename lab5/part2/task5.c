@@ -47,7 +47,8 @@ void *invert() {
     struct sembuf sem_lock = {INVERT,-1,SEM_UNDO};
     while(semop(sem_ID,&sem_lock,1) != -1) {
         //printf("--- invert ---\n");
-        for (int i = 0; i < length; i++) {
+        int i;
+        for (i = 0; i < length; i++) {
             if (array[i] >= 'A' && array[i] <= 'Z') array[i] = (char) tolower(array[i]);
             else array[i] = (char) toupper(array[i]);
         }
@@ -64,7 +65,8 @@ void *reverse(){
 
         //printf("--- reverse ---\n");
         char letter;
-        for (int i = 0; i < length / 2; i++) {
+        int i;
+        for (i = 0; i < length / 2; i++) {
             letter = array[length - 1 - i];
             //printf("Next letter %c\n", letter);
             array[length - 1 - i] = array[i];

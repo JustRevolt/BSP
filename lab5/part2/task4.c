@@ -37,7 +37,8 @@ void *invert() {
     while(sem_wait(&sem[INVERT]) == 0) {
 
         //printf("--- invert ---\n");
-        for (int i = 0; i < length; i++) {
+        int i;
+        for (i = 0; i < length; i++) {
             if (array[i] >= 'A' && array[i] <= 'Z') array[i] = (char) tolower(array[i]);
             else array[i] = (char) toupper(array[i]);
         }
@@ -53,7 +54,8 @@ void *reverse(){
 
         //printf("--- reverse ---\n");
         char letter;
-        for (int i = 0; i < length / 2; i++) {
+        int i;
+        for (i = 0; i < length / 2; i++) {
             letter = array[length - 1 - i];
             //printf("Next letter %c\n", letter);
             array[length - 1 - i] = array[i];
@@ -67,7 +69,8 @@ void *reverse(){
 
 void sighandler(int sign_num){
     printf("\nGood bye :(\n");
-    for(int i=0; i<3;i++){
+    int i;
+    for(i=0; i<3;i++){
         sem_destroy(&sem[i]);
     }
     exit(EXIT_SUCCESS);
@@ -76,7 +79,8 @@ void sighandler(int sign_num){
 int main(int argc, char *argv[]){
 
     // 1 initialization
-    for(int i=0; i<3;i++){
+    int i;
+    for(i=0; i<3;i++){
         sem_init(&sem[i], 0,0);
         if (errno){
             perror("INIT");

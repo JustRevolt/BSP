@@ -44,8 +44,8 @@ void *invert(){
         printf("inv <- %s\n",str);
         pthread_rwlock_unlock(&rw_lock);
         // END READ
-
-        for (int i = 0; i < LENGTH; i++) {
+        int i;
+        for (i = 0; i < LENGTH; i++) {
             if (str[i] >= 'A' && str[i] <= 'Z') str[i] = (char) tolower(str[i]);
             else str[i] = (char) toupper(str[i]);
         }
@@ -70,8 +70,8 @@ void *reverse(){
         printf("rev <- %s\n",str);
         pthread_rwlock_unlock(&rw_lock);
         // END READ
-
-        for (int i = 0; i < LENGTH / 2; i++) {
+        int i;
+        for (i = 0; i < LENGTH / 2; i++) {
             letter = str[LENGTH - 1 - i];
             str[LENGTH - 1 - i] = str[i];
             str[i] = letter;
@@ -95,7 +95,8 @@ void *count_up(){
         pthread_rwlock_unlock(&rw_lock);
 
         counter = 0 ;
-        for (int i = 0; i < LENGTH; i++) {
+        int i;
+        for (i = 0; i < LENGTH; i++) {
             if (str[i] >= 'A' && str[i] <= 'Z') counter++;
         }
         printf("Current number of letters in upper case is %d\n", counter);
